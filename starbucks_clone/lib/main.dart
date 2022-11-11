@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:starbucks_clone/model.dart';
 import 'package:starbucks_clone/starbucks_secondpage.dart';
 import 'starbucks_firstpage.dart';
+import 'starbucks_thirdpage.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -27,6 +28,7 @@ class _StarbucksState extends State<Starbucks> {
         children: [
           StarbucksFirstPage(),
           StarbucksSecondPage(),
+          StarbucksThirdPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
