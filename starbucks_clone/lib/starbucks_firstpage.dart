@@ -69,9 +69,9 @@ class StarbucksFirstPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "한 해의 마무리 , 수고 많았어요.",
+                            "한 해의 마무리 , \n수고 많았어요.",
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 28,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -91,11 +91,13 @@ class StarbucksFirstPage extends StatelessWidget {
                                         fontSize: 16,
                                         color: StarbucksColor()
                                             .starbucksAccentColor,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
+                                    SizedBox(height: 16.0),
                                     ClipRRect(
                                       borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0)),
+                                          Radius.circular(10.0)),
                                       child: LinearProgressIndicator(
                                         backgroundColor:
                                             Colors.grey.withOpacity(0.2),
@@ -109,6 +111,39 @@ class StarbucksFirstPage extends StatelessWidget {
                                     )
                                   ],
                                 ),
+                              ),
+                              SizedBox(
+                                width: 16,
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 28,
+                                    color: Colors.black,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                        text: "1",
+                                        style: TextStyle(
+                                          fontSize: 38,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    TextSpan(
+                                      text: " / ",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                        text: "12 ★",
+                                        style: TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.bold,
+                                          color: StarbucksColor()
+                                              .starbucksAccentColor,
+                                        )),
+                                  ],
+                                ),
                               )
                             ],
                           ),
@@ -116,6 +151,139 @@ class StarbucksFirstPage extends StatelessWidget {
                       ),
                     )
                   ]),
+                ),
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(52.0),
+                  child: Container(
+                    height: 52,
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: 24,
+                        right: 12,
+                      ),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () => print("What's New 클릭 됨"),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.mail_outline,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  "What's New",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 32),
+                          GestureDetector(
+                            onTap: () => print("Coupon 클릭 됨"),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.confirmation_num_outlined,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  "Coupon",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Spacer(),
+                          Stack(
+                            children: [
+                              Icon(
+                                Icons.notifications_outlined,
+                                color: Colors.grey,
+                                size: 32,
+                              ),
+                              Positioned(
+                                right: 2,
+                                top: 2,
+                                child: CircleAvatar(
+                                  radius: 5,
+                                  backgroundColor:
+                                      StarbucksColor().starbucksPrimaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 18.0,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        child: Image.network(frequencyImg),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 32,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 28,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "노현근",
+                              style: TextStyle(
+                                color: StarbucksColor().starbucksAccentColor,
+                              ),
+                            ),
+                            TextSpan(text: "님을 위한 추천 메뉴"),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 32),
+                    SizedBox(
+                      height: 150,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 100,
+                        itemBuilder: (context, index) {
+                          final menu =
+                              recommendMenu[index % recommendMenu.length];
+                          final name = menu["name"] ?? "이름";
+                          final imgUrl = menu["imgUrl"] ?? "";
+                          return SizedBox(
+                            width: 128,
+                            child: Column(),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
