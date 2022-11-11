@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:starbucks_clone/model.dart';
+import 'package:starbucks_clone/starbucks_secondpage.dart';
 import 'starbucks_firstpage.dart';
 
 void main() {
@@ -24,10 +26,16 @@ class _StarbucksState extends State<Starbucks> {
         index: currentIndex,
         children: [
           StarbucksFirstPage(),
+          StarbucksSecondPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
+        selectedItemColor: StarbucksColor().starbucksPrimaryColor,
+        unselectedItemColor: Colors.grey,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
         onTap: (newIndex) {
           setState(() {
             currentIndex = newIndex;

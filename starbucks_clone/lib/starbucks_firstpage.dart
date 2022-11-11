@@ -278,16 +278,78 @@ class StarbucksFirstPage extends StatelessWidget {
                           final imgUrl = menu["imgUrl"] ?? "";
                           return SizedBox(
                             width: 128,
-                            child: Column(),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CircleAvatar(
+                                  radius: 52,
+                                  backgroundImage: NetworkImage(imgUrl),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                                SizedBox(height: 6),
+                                Text(
+                                  name,
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
                           );
                         },
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 18,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(eventImg),
+                      ),
+                    ),
+                    SizedBox(height: 32),
                   ],
                 ),
               ),
             ],
           ),
+          Positioned(
+            bottom: 18,
+            right: 24,
+            child: GestureDetector(
+              onTap: () => print("Delivery Clicked"),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: StarbucksColor().starbucksPrimaryColor,
+                  borderRadius: BorderRadius.circular(64),
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      "Deliverys",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Icon(
+                      Icons.pedal_bike_outlined,
+                      color: Colors.white,
+                      size: 28,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
