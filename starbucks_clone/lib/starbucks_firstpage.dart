@@ -226,6 +226,66 @@ class StarbucksFirstPage extends StatelessWidget {
                   ),
                 ),
               ),
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 18.0,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        child: Image.network(frequencyImg),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 32,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 28,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "노현근",
+                              style: TextStyle(
+                                color: StarbucksColor().starbucksAccentColor,
+                              ),
+                            ),
+                            TextSpan(text: "님을 위한 추천 메뉴"),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 32),
+                    SizedBox(
+                      height: 150,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 100,
+                        itemBuilder: (context, index) {
+                          final menu =
+                              recommendMenu[index % recommendMenu.length];
+                          final name = menu["name"] ?? "이름";
+                          final imgUrl = menu["imgUrl"] ?? "";
+                          return SizedBox(
+                            width: 128,
+                            child: Column(),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ],
