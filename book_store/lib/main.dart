@@ -1,6 +1,7 @@
 import 'package:book_store/book_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'book.dart';
 
 void main() {
   runApp(
@@ -28,6 +29,15 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
+  final TextEditingController searchController = TextEditingController();
+
+  void search(BookService bookService) {
+    String keyword = searchController.text;
+    if (keyword.isNotEmpty) {
+      bookService.getBookList(keyword);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<BookService>(builder: (context, bookService, child) {
@@ -49,6 +59,7 @@ class HomePage extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
               child: TextField(
+                controller: searchController,
                 decoration: InputDecoration(
                   hintText: "책 이름을 입력하세요.",
                   border: OutlineInputBorder(
@@ -62,17 +73,36 @@ class HomePage extends StatelessWidget {
                     icon: Icon(Icons.search),
                     color: Colors.black,
                     onPressed: () {
-                      print("entered");
+                      search(bookService);
                     },
                   ),
                 ),
                 onSubmitted: (value) {
-                  print("entered");
+                  search(bookService);
                 },
               ),
             ),
           ),
         ),
+        body: bookService.bookList.isEmpty
+            ? Center(
+                child: Text("검색어를 입력해주세요"),
+              )
+            : ListView.builder(
+                itemCount: bookService.bookList.length,
+                itemBuilder: (context, index) {
+                  Book book = bookService.bookList[index];
+                  return ListTile(
+                    leading: Image.network(
+                      book.thumbnail,
+                      width: 80,
+                      height: 80,
+                    ),
+                    title: Text(book.title),
+                    subtitle: Text(book.subTitle),
+                  );
+                },
+              ),
       );
     });
   }
