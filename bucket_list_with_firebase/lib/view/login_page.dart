@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'home_page.dart';
+
 import '../auth/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,80 +17,103 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("로그인")),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            /// 현재 유저 로그인 상태
-            Center(
-              child: Text(
-                "로그인해 주세요 🙂",
-                style: TextStyle(
-                  fontSize: 24,
-                ),
-              ),
+    return GetBuilder<AuthService>(
+      builder: (authService) {
+        final user = authService.currentUser();
+        return Scaffold(
+          appBar: AppBar(title: Text("로그인")),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                centerText(user),
+                SizedBox(height: 32),
+                textFieldWithCustomController(emailController, "이메일"),
+                textFieldWithCustomController(passwordController, "비밀번호"),
+                SizedBox(height: 32),
+                loginButton(
+                    authService, emailController, passwordController, context),
+                signupButton(
+                    authService, emailController, passwordController, context),
+              ],
             ),
-            SizedBox(height: 32),
-            emailTextField(emailController),
-            passwordTextField(passwordController),
-            SizedBox(height: 32),
-            logIntButton(context),
-            signUpButton(emailController, passwordController),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
 
-TextField emailTextField(TextEditingController emailController) {
-  return TextField(
-    controller: emailController,
-    decoration: InputDecoration(hintText: "이메일"),
+Center centerText(user) {
+  return Center(
+    child: Text(
+      user == null ? "로그인해 주세요 🙂" : "${user.email}님 안녕하세요 👋",
+      style: TextStyle(
+        fontSize: 24,
+      ),
+    ),
   );
 }
 
-TextField passwordTextField(TextEditingController passwordController) {
+TextField textFieldWithCustomController(controller, String hintText) {
   return TextField(
-    controller: passwordController,
-    obscureText: false, // 비밀번호 안보이게
-    decoration: InputDecoration(hintText: "비밀번호"),
+    controller: controller,
+    decoration: InputDecoration(hintText: hintText),
   );
 }
 
-ElevatedButton logIntButton(BuildContext context) {
+ElevatedButton loginButton(
+    AuthService authService,
+    TextEditingController emailController,
+    TextEditingController passwordController,
+    context) {
   return ElevatedButton(
     child: Text("로그인", style: TextStyle(fontSize: 21)),
     onPressed: () {
-      // 로그인 성공시 HomePage로 이동
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => HomePage()),
+      authService.signIn(
+        email: emailController.text,
+        password: passwordController.text,
+        onSuccess: () {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("로그인 성공"),
+          ));
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        },
+        onError: (err) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(err),
+          ));
+        },
       );
     },
   );
 }
 
-ElevatedButton signUpButton(TextEditingController emailController,
-    TextEditingController passwordController) {
+ElevatedButton signupButton(
+    AuthService authService,
+    TextEditingController emailController,
+    TextEditingController passwordController,
+    context) {
   return ElevatedButton(
     child: Text("회원가입", style: TextStyle(fontSize: 21)),
     onPressed: () {
-      AuthService authService = Get.find();
-
       authService.signUp(
         email: emailController.text,
         password: passwordController.text,
         onSuccess: () {
-          // 회원가입 성공
-          print("회원가입 성공");
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("회원가입 성공"),
+          ));
         },
         onError: (err) {
-          // 에러 발생
-          print("회원가입 실패 : $err");
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(err),
+          ));
         },
       );
     },

@@ -1,11 +1,21 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'view/login_page.dart';
-import 'auth/auth_service.dart';
 import 'package:get/get.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'auth/auth_service.dart';
+import 'bucket/bucket_service.dart';
+import 'view/home_page.dart';
+import 'view/login_page.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  Get.put(AuthService());
+  Get.put(BucketService());
+
+  runApp(
+    MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,9 +23,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+    return GetBuilder<AuthService>(
+      builder: (authService) {
+        final user = authService.currentUser();
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: user == null ? LoginPage() : HomePage(),
+        );
+      },
     );
   }
 }
